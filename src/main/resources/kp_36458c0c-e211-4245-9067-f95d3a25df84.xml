@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xml-stylesheet type="text/xsl" href="https://portal.rosreestr.ru/xsl/EGRP/Reestr_Extract_Gkn/OKS/07/Common.xsl"?>
+
+<KPOKS xmlns="urn://x-artefacts-rosreestr-ru/outgoing/kpoks/4.0.1"
+xmlns:smev="urn://x-artefacts-smev-gov-ru/supplementary/commons/1.0.1"
+xmlns:num="urn://x-artefacts-rosreestr-ru/commons/complex-types/numbers/1.0"
+xmlns:adrs="urn://x-artefacts-rosreestr-ru/commons/complex-types/address-output/4.0.1"
+xmlns:spa="urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/5.0.1"
+xmlns:param="urn://x-artefacts-rosreestr-ru/commons/complex-types/parameters-oks/2.0.1"
+xmlns:cer="urn://x-artefacts-rosreestr-ru/commons/complex-types/certification-doc/1.0"
+xmlns:doc="urn://x-artefacts-rosreestr-ru/commons/complex-types/document-output/4.0.1"
+xmlns:flat="urn://x-artefacts-rosreestr-ru/commons/complex-types/assignation-flat/1.0.1"
+xmlns:ch="urn://x-artefacts-rosreestr-ru/commons/complex-types/cultural-heritage/2.0.1">
+<Realty>
+<Flat CadastralNumber="78:34:0413301:5041" State="01"
+DateCreated="2012-08-29"
+>
+<CadastralBlock>78:34:0413301</CadastralBlock>
+<ObjectType>002001003000</ObjectType>
+<ParentCadastralNumbers>
+<CadastralNumberOKS>78:34:0413301:3023</CadastralNumberOKS>
+</ParentCadastralNumbers>
+<OldNumbers>
+<num:OldNumber Type="03" Number="78:4133А:0:15:2070" />
+</OldNumbers>
+<Assignation>
+<flat:AssignationCode>206002000000</flat:AssignationCode>
+<flat:AssignationType>205001000000</flat:AssignationType>
+</Assignation>
+<Area>48.6</Area>
+<Address>
+<adrs:OKATO>40270565000</adrs:OKATO>
+<adrs:KLADR>78000000000047500</adrs:KLADR>
+<adrs:Region>78</adrs:Region>
+<adrs:Street Name="Ильюшина" Type="ул" />
+<adrs:Level1 Type="д" Value="15" />
+<adrs:Level2 Type="корп" Value="1" />
+<adrs:Level3 Type="литера" Value="А" />
+<adrs:Apartment Type="кв" Value="161" />
+</Address>
+<PositionInObject>
+<Levels>
+<Level Number="1" Type="01">
+<Position NumberOnPlan="161">
+</Position>
+</Level>
+</Levels>
+</PositionInObject>
+<CadastralCost Value="4504696.96" Unit="383" />
+<Rights>
+<Right>
+<Name>Собственность</Name>
+<Type>001001000000</Type>
+<Owners>
+<Owner>
+<Person>
+<FamilyName>Лемберг</FamilyName>
+<FirstName>Елена</FirstName>
+<Patronymic>Петровна</Patronymic>
+</Person>
+</Owner>
+</Owners>
+<Registration>
+<RegNumber>78-78-38/153/2012-067</RegNumber>
+<RegDate>2012-10-24</RegDate>
+</Registration>
+</Right>
+</Rights>
+</Flat>
+</Realty>
+<CertificationDoc>
+<cer:Organization>ФГИС ЕГРН</cer:Organization>
+<cer:Date>2017-03-27</cer:Date>
+<cer:Number>99/2017/12763649</cer:Number>
+</CertificationDoc>
+<CoordSystems>
+<spa:CoordSystem Name="мск 64" CsId="ID0" />
+</CoordSystems>
+<eDocument CodeType="112" Version="07" Scope="GKN">
+<Sender Kod="00.0.4.195"
+Name="ФГИС ЕГРН"
+Region="99"
+Date_Upload="2017-03-27"
+Appointment="Государственный регистратор"
+/>
+<Recipient Kod="00.0.4.111" Name="Рыжова Дарья Александровна" />
+</eDocument>
+<ReestrExtract>
+<DeclarAttribute ID_KUVI="0"
+ExtractTypeCode="010000"
+ExtractTypeText="Выписка из Единого государственного реестра недвижимости об основных характеристиках и зарегистрированных правах на объект недвижимости"
+ExtractNumber="99/2017/12763649"
+ExtractDate="27.03.2017"
+RequeryNumber="80-6241515"
+RequeryDate="27.03.2017"
+ExtractCount="1"
+NoticeCount="0"
+RefuseCount="0"
+Registrator="ФГИС ЕГРН">
+<ReceivName>Рыжова Дарья Александровна</ReceivName>
+<ReceivAdress>не указан</ReceivAdress>
+</DeclarAttribute>
+<ExtractObjectRight>
+<HeadContent>
+<ID_REC_KUVI>0</ID_REC_KUVI>
+<Title>ФЕДЕРАЛЬНАЯ СЛУЖБА ГОСУДАРСТВЕННОЙ РЕГИСТРАЦИИ, КАДАСТРА И КАРТОГРАФИИ</Title>
+<DeptName>ФГИС ЕГРН</DeptName>
+<ExtractTitle>Выписка из Единого государственного реестра недвижимости об основных характеристиках и зарегистрированных правах на объект недвижимости</ExtractTitle>
+<Content>На основании запроса от 27.03.2017 г., поступившего на рассмотрение 27.03.2017 г., сообщаем, что согласно записям Единого государственного реестра недвижимости:</Content>
+</HeadContent>
+<ExtractObject>
+<ObjectRight>
+<Right RightNumber="1">
+<Owner >
+<ID_Subject>126334189578</ID_Subject>
+<Person>
+<Code_SP>007003000000</Code_SP>
+<Content>Лемберг Елена Петровна</Content>
+<FIO>
+<Surname>Лемберг</Surname>
+<First>Елена</First>
+<Patronymic>Петровна</Patronymic>
+</FIO>
+</Person>
+</Owner>
+<Registration >
+<ID_Record>297119781078</ID_Record>
+<MdfDate>01.11.2012</MdfDate>
+<RegNumber>78-78-38/153/2012-067</RegNumber>
+<Type>001001000000</Type>
+<Name>Собственность, № 78-78-38/153/2012-067 от 24.10.2012</Name>
+<RegDate>24.10.2012</RegDate>
+<DocFound>
+<ID_Document>297119777078</ID_Document>
+<Content>Договор купли-продажи, № б/н от 15.10.2012</Content>
+<Type_Document>010003007000</Type_Document>
+<Name>Договор</Name>
+<Number>б/н</Number>
+<Date>15.10.2012</Date>
+</DocFound>
+</Registration>
+<NoEncumbrance>не зарегистрировано</NoEncumbrance>
+</Right>
+</ObjectRight>
+<RightSteal>данные отсутствуют</RightSteal>
+<WithoutThirdParty>данные отсутствуют</WithoutThirdParty>
+</ExtractObject>
+<FootContent>
+<Recipient>Рыжова Дарья Александровна</Recipient>
+<ExtractDate>27.03.2017</ExtractDate>
+<Content></Content>
+</FootContent>
+</ExtractObjectRight>
+</ReestrExtract>
+</KPOKS>
