@@ -1,12 +1,14 @@
-<fields>
-    <Street>adrs:Street</Street>
-    <House>adrs:Level1</House>
-    <Corpus>adrs:Level2</Corpus>
-    <Litera>adrs:Level3</Litera>
-    <Room>adrs:Apartment</Room>
-    <Person>Peroson</Person>
-    <RegNumber>RegNumber</RegNumber>
-    <RegDate>RegDate</RegDate>
-    <Area>Area</Area>
-    <ShareText>1/6</ShareText>
-</fields>
+<Поля>
+    <Улица name="adrs:Street" type="attribute">Name,Type</Улица>
+    <Дом name="adrs:Level1" type="attribute">Value,Type</Дом>
+    <Корпус name="adrs:Level2" type="attribute">Value,Type</Корпус>
+    <Литера name="adrs:Level3" type="attribute">Type,Value</Литера>
+    <кв name="adrs:Apartment" type="attribute">Value,Type</кв>
+    <ФИО name="FIO" type="field">Surname,First,Patronymic</ФИО>
+    <Номер_свидетельства name="RegNumber" type="text"></Номер_свидетельства>
+    <Дата_свидетельства name="RegDate" type="text"></Дата_свидетельства>
+    <Площадь_квартиры name="Area" type="text"></Площадь_квартиры>
+    <Доля_собственника name="ShareText" type="text"></Доля_собственника>
+    <Доля_собственника_дробь name="drob" type="text"></Доля_собственника_дробь>
+    <Площадь_собственника name="ssob" type="text"></Площадь_собственника>
+</Поля>

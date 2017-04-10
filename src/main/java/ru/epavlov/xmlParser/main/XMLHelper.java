@@ -57,6 +57,11 @@ public class XMLHelper {
         }
         return s;
     }
+    public String getField(String fieldName,String src){
+
+
+        return "";
+    }
 
 
 }

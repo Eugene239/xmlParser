@@ -1,8 +1,9 @@
 package ru.epavlov.xmlParser.main;
 
+import org.xml.sax.SAXException;
+
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 
 /**
  * Описание класса<br/>
@@ -14,28 +15,8 @@ import java.nio.file.Files;
  * @version 1.0 Created 05.04.2017, 12:14
  */
 public class Main {
-
-    public static void main(String[] args) throws IOException {
-        XMLHelper xmlHelper = new XMLHelper();
-        File f= xmlHelper.getFileList().get(0);
-        String s="";
-        for(String str: Files.readAllLines(f.toPath())){
-            s+=str+"\n";
-        }
-        xmlHelper.indent(s);
+    public static void main(String[] args) throws IOException, SAXException {
+        Parser.getInstance().parseFile(new File("C:\\Users\\epavlov\\Projects\\xmlParser\\src\\main\\resources\\kp_b39c766e-1458-4658-a5c0-5b2dcb4ea495.xml"));
+        Parser.getInstance().save(new File("C:\\Users\\epavlov\\Projects\\xmlParser\\src\\main\\resources\\out.xls"));
     }
 }
-
-/*
-         xmlHelper.getFileList().stream().forEach(file -> {
-            final String[] s = {""};
-            try {
-                Files.readAllLines(file.toPath()).forEach(str->{
-                    s[0] +=str+"\n";
-                });
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            System.out.println(file.getName());
-        });
- */
