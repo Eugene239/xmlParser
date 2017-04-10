@@ -11,15 +11,7 @@ import java.io.File;
 import java.io.StringWriter;
 import java.util.ArrayList;
 
-/**
- * Описание класса<br/>
- * <p> Copyright (c) </p>
- * <p> Company: <a href="http://estp-sro.ru/">ESTP-SRO</a>, Inc. Все права защищены.</p>
- * <p> Это программное обеспечение является собственностью ESTP-SRO.</p>
- *
- * @author <a href="http://estp.ru/">ESTP-SRO</a>
- * @version 1.0 Created 05.04.2017, 12:15
- */
+
 public class XMLHelper {
     private static final Logger log = Logger.getLogger(XMLHelper.class);
     public static final String dir ="C:\\Users\\epavlov\\Desktop\\xmlEugene";

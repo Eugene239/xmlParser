@@ -37,14 +37,6 @@ public class Field {
         return name;
     }
 
-    public Type getType() {
-        return type;
-    }
-
-    public ArrayList<String> getParams() {
-        return params;
-    }
-
     public String getXmlName() {
         return xmlName;
     }

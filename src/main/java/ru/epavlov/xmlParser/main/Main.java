@@ -2,6 +2,7 @@ package ru.epavlov.xmlParser.main;
 
 import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 
@@ -16,7 +17,26 @@ import java.io.IOException;
  */
 public class Main {
     public static void main(String[] args) throws IOException, SAXException {
-        Parser.getInstance().parseFile(new File("C:\\Users\\epavlov\\Projects\\xmlParser\\src\\main\\resources\\kp_b39c766e-1458-4658-a5c0-5b2dcb4ea495.xml"));
-        Parser.getInstance().save(new File("C:\\Users\\epavlov\\Projects\\xmlParser\\src\\main\\resources\\out.xls"));
+        checkList();
+       //checkFile(new File("C:\\Users\\epavlov\\Desktop\\xmlEugene\\kp_1831b7d7-38fd-4bd2-8e95-e527ddf58318.xml"));
     }
+    public static void checkList() throws IOException, SAXException {
+        File f =new File("C:\\Users\\epavlov\\Desktop\\xmlEugene");
+
+            for (File f_ : f.listFiles()) {
+                try {
+                Parser.getInstance().parseFile(f_);
+                Parser.getInstance().save(f_);
+                } catch (Exception e){
+                    System.out.println(f_.getName());
+                    e.printStackTrace();
+                }
+            }
+
+    }
+    public static void checkFile(File f) throws IOException, SAXException, ParserConfigurationException {
+        Parser.getInstance().parseFile(f);
+        Parser.getInstance().save(f);
+    }
+
 }

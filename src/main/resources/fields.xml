@@ -1,9 +1,9 @@
 <Поля>
-    <Улица name="adrs:Street" type="attribute">Name,Type</Улица>
-    <Дом name="adrs:Level1" type="attribute">Value,Type</Дом>
-    <Корпус name="adrs:Level2" type="attribute">Value,Type</Корпус>
-    <Литера name="adrs:Level3" type="attribute">Type,Value</Литера>
-    <кв name="adrs:Apartment" type="attribute">Value,Type</кв>
+    <Улица name="adrs:Street" type="attribute">Type,Name</Улица>
+    <Дом name="adrs:Level1" type="attribute">Value</Дом>
+    <Корпус name="adrs:Level2" type="attribute">Value</Корпус>
+    <Литера name="adrs:Level3" type="attribute">Value</Литера>
+    <кв name="adrs:Apartment" type="attribute">Value</кв>
     <ФИО name="FIO" type="field">Surname,First,Patronymic</ФИО>
     <Номер_свидетельства name="RegNumber" type="text"></Номер_свидетельства>
     <Дата_свидетельства name="RegDate" type="text"></Дата_свидетельства>

@@ -32,12 +32,12 @@ public class Parser {
     private ArrayList<String> seq = new ArrayList<>();
     private RoomInfo roomInfo;
     private static Parser instance= new Parser();
-    private DocumentBuilder docBuilder;
+  //  private DocumentBuilder docBuilder;
     private ArrayList<Field> nodeList;
     private Parser(){
         try {
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
-            docBuilder = docBuilderFactory.newDocumentBuilder();
+            DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
             Document document = docBuilder.parse(getClass().getClassLoader().getResourceAsStream("fields.xml"));
             NodeList nodeList = document.getDocumentElement().getChildNodes();
             for (int i = 0; i < nodeList.getLength(); i++) {
@@ -60,7 +60,9 @@ public class Parser {
         return instance;
     }
 
-    public void parseFile(File f) throws IOException, SAXException {
+    public void parseFile(File f) throws IOException, SAXException, ParserConfigurationException {
+        DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
         Document d= docBuilder.parse(f);
         NodeList nodeList = d.getElementsByTagName("*");
         roomInfo =new RoomInfo();
@@ -85,32 +87,15 @@ public class Parser {
         for(int i=0;i<seq.size();i++){ // стобцы
             String xmlName = stringValueHashMap.get(seq.get(i)).getXmlName();
             rowhead.createCell(i).setCellValue(xmlName);
-          //  System.out.println(xmlName);
             ArrayList<String> list = roomInfo.getValue(xmlName);
             for(int j=0; j<list.size();j++){
                 if (sheet.getRow(j+1)==null) sheet.createRow(j+1);
                 sheet.getRow(j+1).createCell(i).setCellValue(list.get(j));
             }
-           // stringValueHashMap.get(seq.get(i)).
         }
 
-//        stringValueHashMap.forEach((s,v)->{
-//            rowhead.createCell(i[0]).setCellValue(v.getXmlName());
-//          //  i[0]++;
-//        });
-//        rowhead.createCell(0).setCellValue("No.");
-//        rowhead.createCell(1).setCellValue("Name");
-//        rowhead.createCell(2).setCellValue("Address");
-//        rowhead.createCell(3).setCellValue("Email");
-
-//        HSSFRow row = sheet.createRow((short)1);
-//        row.createCell(0).setCellValue("1");
-//        row.createCell(1).setCellValue("Sankumarsingh");
-//        row.createCell(2).setCellValue("India");
-//        row.createCell(3).setCellValue("sankumarsingh@gmail.com");
         for(int i =sheet.getFirstRowNum();i<sheet.getLastRowNum();i++){
             sheet.autoSizeColumn(i,true);
-            //sheet.autoSizeColumn(i);
         }
         FileOutputStream fileOut = new FileOutputStream(f);
         workbook.write(fileOut);

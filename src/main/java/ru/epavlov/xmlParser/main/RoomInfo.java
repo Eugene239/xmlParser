@@ -3,15 +3,7 @@ package ru.epavlov.xmlParser.main;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/**
- * Описание класса<br/>
- * <p> Copyright (c) </p>
- * <p> Company: <a href="http://estp-sro.ru/">ESTP-SRO</a>, Inc. Все права защищены.</p>
- * <p> Это программное обеспечение является собственностью ESTP-SRO.</p>
- *
- * @author <a href="http://estp.ru/">ESTP-SRO</a>
- * @version 1.0 Created 05.04.2017, 17:47
- */
+
 public class RoomInfo {
     private HashMap<String,ArrayList<String>> map = new HashMap<>();
 
@@ -23,7 +15,7 @@ public class RoomInfo {
         return maxSize[0];
     }
     public void add(String s,String value){
-        if (s.equals("Доля_собственника")){
+        if (s.equals("Доля_собственника") && !value.equals("1")){
            // System.err.println("доля");
             int x = Integer.parseInt(value.split("/")[0]);
             int y = Integer.parseInt(value.split("/")[1]);
@@ -76,94 +68,4 @@ public class RoomInfo {
             }
         });
     }
-
-
-
-
-
-
-//    public static float houseArea;
-//    private String street;
-//    private String house;
-//    private String corpus;
-//    private String liter;
-//    private String room;
-//    private ArrayList<String> fio = new ArrayList<>();
-//    private ArrayList<String> regNumber = new ArrayList<>();
-//    private ArrayList<String>  regDate = new ArrayList<>();
-//    private float roomArea;
-//    private ArrayList<String> spart =new ArrayList<>();
-//    private ArrayList<Float> fpart = new ArrayList<>();
-//
-//
-//
-//    public void setStreet(String street) {
-//        this.street = street;
-//    }
-//
-//    public void setHouse(String house) {
-//        this.house = house;
-//    }
-//
-//    public void setCorpus(String corpus) {
-//        this.corpus = corpus;
-//    }
-//
-//    public void setLiter(String liter) {
-//        this.liter = liter;
-//    }
-//
-//    public void setRoom(String room) {
-//        this.room = room;
-//    }
-//
-//    public void setRoomArea(float roomArea) {
-//        this.roomArea = roomArea;
-//    }
-//
-//    public String getStreet() {
-//        return street;
-//    }
-//
-//    public String getHouse() {
-//        return house;
-//    }
-//
-//    public String getCorpus() {
-//        return corpus;
-//    }
-//
-//    public String getLiter() {
-//        return liter;
-//    }
-//
-//    public String getRoom() {
-//        return room;
-//    }
-//
-//    public ArrayList<String> getFio() {
-//        return fio;
-//    }
-//
-//    public ArrayList<String> getRegNumber() {
-//        return regNumber;
-//    }
-//
-//    public ArrayList<String> getRegDate() {
-//        return regDate;
-//    }
-//
-//    public float getRoomArea() {
-//        return roomArea;
-//    }
-//
-//    public ArrayList<String> getSpart() {
-//        return spart;
-//    }
-//
-//    public ArrayList<Float> getFpart() {
-//        return fpart;
-//    }
-
-
 }
