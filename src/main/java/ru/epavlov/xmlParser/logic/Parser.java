@@ -1,4 +1,4 @@
-package ru.epavlov.xmlParser.main;
+package ru.epavlov.xmlParser.logic;
 
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -26,15 +26,17 @@ import java.util.HashMap;
  * @author <a href="http://estp.ru/">ESTP-SRO</a>
  * @version 1.0 Created 05.04.2017, 18:08
  */
+//ObjectRight
 
 public class Parser {
-    private HashMap<String,Field> stringValueHashMap = new HashMap<>();
+    protected static HashMap<String,Field> stringValueHashMap = new HashMap<>();
     private ArrayList<String> seq = new ArrayList<>();
     private RoomInfo roomInfo;
     private static Parser instance= new Parser();
   //  private DocumentBuilder docBuilder;
     private ArrayList<Field> nodeList;
     private Parser(){
+        //address + objectRights
         try {
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
@@ -64,17 +66,18 @@ public class Parser {
         DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
         Document d= docBuilder.parse(f);
-        NodeList nodeList = d.getElementsByTagName("*");
+
+        NodeList nodeList = d.getElementsByTagName("ObjectRight").item(0).getChildNodes();
         roomInfo =new RoomInfo();
         for(int i=0;i<nodeList.getLength();i++){
             Field field =stringValueHashMap.get(nodeList.item(i).getNodeName());
             if (field!=null){
                 roomInfo.add(field.getXmlName(),field.getValue(nodeList.item(i)));
 //                map.put(field.getXmlName(),)
-//                switch (nodeList.item(i).getNodeName()){
+//                switch (nodeList.item(ApplicationGui).getNodeName()){
 //                  case :
 //                }
-//                System.out.println(nodeList.item(i).getNodeName()+" "+ field.getValue(nodeList.item(i)));
+//                System.out.println(nodeList.item(ApplicationGui).getNodeName()+" "+ field.getValue(nodeList.item(ApplicationGui)));
             }
         }
     }

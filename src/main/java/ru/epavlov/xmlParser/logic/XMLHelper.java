@@ -1,4 +1,4 @@
-package ru.epavlov.xmlParser.main;
+package ru.epavlov.xmlParser.logic;
 
 import org.apache.commons.lang3.CharEncoding;
 import org.apache.log4j.Logger;

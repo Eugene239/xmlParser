@@ -1,5 +1,5 @@
 <Поля>
-    <Улица name="adrs:Street" type="attribute">Type,Name</Улица>
+    <Улица name="adrs:Street" type="attribute" xpath="//Address/Street/@Name">Type,Name</Улица>
     <Дом name="adrs:Level1" type="attribute">Value</Дом>
     <Корпус name="adrs:Level2" type="attribute">Value</Корпус>
     <Литера name="adrs:Level3" type="attribute">Value</Литера>
@@ -9,6 +9,6 @@
     <Дата_свидетельства name="RegDate" type="text"></Дата_свидетельства>
     <Площадь_квартиры name="Area" type="text"></Площадь_квартиры>
     <Доля_собственника name="ShareText" type="text"></Доля_собственника>
-    <Доля_собственника_дробь name="drob" type="text"></Доля_собственника_дробь>
-    <Площадь_собственника name="ssob" type="text"></Площадь_собственника>
+    <Доля_собственника_дробь name="drob" type="text" ></Доля_собственника_дробь>
+    <Площадь_собственника name="ssob" type="text" xpath="//Area"></Площадь_собственника>
 </Поля>

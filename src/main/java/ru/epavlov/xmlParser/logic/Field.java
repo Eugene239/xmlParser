@@ -1,4 +1,4 @@
-package ru.epavlov.xmlParser.main;
+package ru.epavlov.xmlParser.logic;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -20,15 +20,18 @@ public class Field {
         attribute, field, text
     }
 
+
     private String name;
     private Type type;
     private ArrayList<String> params;
     private String xmlName;
+
     public Field(Node setNode){
         name = setNode.getAttributes().getNamedItem("name").getTextContent();
         type = Type.valueOf(setNode.getAttributes().getNamedItem("type").getTextContent());
         params = new ArrayList<>(Arrays.asList(setNode.getTextContent().split(",")));
         xmlName = setNode.getNodeName();
+
         System.out.println("["+setNode.getNodeName().toUpperCase()+"]:  "+ " name: "+name+", type: "+type+", params: "+ Arrays.toString(params.toArray()));
 
     }
@@ -40,6 +43,7 @@ public class Field {
     public String getXmlName() {
         return xmlName;
     }
+
     public String getValue(Node node){
         switch (type) {
             case text:
@@ -68,5 +72,6 @@ public class Field {
         });
         return out[0];
     }
+
 }
 
