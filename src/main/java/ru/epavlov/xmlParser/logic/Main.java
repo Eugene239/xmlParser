@@ -28,8 +28,11 @@ public class Main {
         DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
         Document d= docBuilder.parse(new File("C:\\Users\\epavlov\\Desktop\\xmlEugene\\kp_b39c766e-1458-4658-a5c0-5b2dcb4ea495.xml"));
         XPath xpath = XPathFactory.newInstance().newXPath();
-        String expression = "//Address/Street/@Name";
-        String node= (String) xpath.evaluate(expression, d, XPathConstants.STRING);
-        System.out.println(node);
+        String expression = "//Area/text()";
+//        NodeList list= (NodeList) xpath.evaluate(expression, d, XPathConstants.NODESET);
+//        for (int i = 0; i <list.getLength() ; i++) {
+//            System.out.println(list.item(i).getTextContent());
+//        }
+        System.out.println(xpath.evaluate(expression, d, XPathConstants.STRING));
     }
 }

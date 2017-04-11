@@ -34,7 +34,7 @@ public class App {
     }
     public static void checkFile(File f) throws IOException, SAXException, ParserConfigurationException {
         Parser.getInstance().parseFile(f);
-        Parser.getInstance().save(f);
+      //  Parser.getInstance().save(f);
     }
 
 }

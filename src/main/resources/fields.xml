@@ -1,14 +1,14 @@
 <Поля>
-    <Улица name="adrs:Street" type="attribute" xpath="//Address/Street/@Name">Type,Name</Улица>
-    <Дом name="adrs:Level1" type="attribute">Value</Дом>
-    <Корпус name="adrs:Level2" type="attribute">Value</Корпус>
-    <Литера name="adrs:Level3" type="attribute">Value</Литера>
-    <кв name="adrs:Apartment" type="attribute">Value</кв>
-    <ФИО name="FIO" type="field">Surname,First,Patronymic</ФИО>
-    <Номер_свидетельства name="RegNumber" type="text"></Номер_свидетельства>
-    <Дата_свидетельства name="RegDate" type="text"></Дата_свидетельства>
-    <Площадь_квартиры name="Area" type="text"></Площадь_квартиры>
-    <Доля_собственника name="ShareText" type="text"></Доля_собственника>
-    <Доля_собственника_дробь name="drob" type="text" ></Доля_собственника_дробь>
-    <Площадь_собственника name="ssob" type="text" xpath="//Area"></Площадь_собственника>
+    <Улица  xpath="//Address/Street" entity="Node" type="attribute">Type,Name</Улица>
+    <Дом xpath="//Address/Level1" entity="Node" type="attribute">Value</Дом>
+    <Корпус xpath="//Address/Level2" entity="Node" type="attribute">Value</Корпус>
+    <Литера xpath="//Address/Level3" entity="Node" type="attribute">Value</Литера>
+    <Квартира xpath="//Address/Apartment" entity="Node" type="attribute">Value</Квартира>
+    <ФИО xpath="//ExtractObject/ObjectRight/Right/Owner/Person/FIO" entity="NodeSet" type="field">Surname,First,Patronymic</ФИО>
+    <Номер_свидетельства xpath="//ExtractObject/ObjectRight/Right/Registration/RegNumber"  entity="NodeSet"/>
+    <Дата_свидетельства xpath="//ExtractObject/ObjectRight/Right/Registration/RegDate"  entity="NodeSet"/>
+    <Площадь_квартиры xpath="//Area/text()" entity="String" type="text"/>
+    <Доля_собственника xpath="//ExtractObject/ObjectRight/Right/Registration/ShareText" entity="NodeSet" type="text"/>
+    <Доля_собственника_дробь/>
+    <Площадь_собственника/>
 </Поля>
