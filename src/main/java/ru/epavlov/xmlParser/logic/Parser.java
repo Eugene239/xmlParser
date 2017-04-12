@@ -5,8 +5,9 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import ru.epavlov.xmlParser.logic.xml.Common;
+import ru.epavlov.xmlParser.logic.xml.Right;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -15,7 +16,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -30,60 +30,44 @@ import java.util.HashMap;
 //ObjectRight
 
 public class Parser {
-    protected static HashMap<String, Field> stringValueHashMap = new HashMap<>();
-    private ArrayList<String> seq = new ArrayList<>();
-    private RoomInfo roomInfo;
-    private static Parser instance = new Parser();
-    //  private DocumentBuilder docBuilder;
-    private ArrayList<Field> nodeList;
+    private ArrayList<Common> commons = new ArrayList<>();//общие данные для квартиры
+    private Right right;// = new ArrayList<>();
+    private ArrayList<HashMap<String,String>> list;
+    private Document document;
+    private Float area;
+    public static ArrayList<String> xmlFields= new ArrayList<>();
+    private static Parser instance;
 
-    private Parser() {
-        //address + objectRights
-        try {
+    private Parser() throws ParserConfigurationException, IOException, SAXException {
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
             Document document = docBuilder.parse(getClass().getClassLoader().getResourceAsStream("fields.xml"));
-            NodeList nodeList = document.getDocumentElement().getChildNodes();
-            for (int i = 0; i < nodeList.getLength(); i++) {
-                Node node = nodeList.item(i);
-                if (node.getNodeType() == Node.ELEMENT_NODE) {
-                    Field f = new Field(node);
-                    stringValueHashMap.put(f.getXmlName(), f);
+
+            //инициализация общих данных
+            Node common= document.getElementsByTagName("Общее").item(0);
+            for (int i = 0; i <common.getChildNodes().getLength() ; i++) {
+                Node item = common.getChildNodes().item(i);
+                if (item.getNodeType()==Node.ELEMENT_NODE){
+                    commons.add(new Common(item));
+                    xmlFields.add(item.getNodeName());
                 }
-
             }
-            System.out.println("########################################");
-            System.out.println();
-        } catch (ParserConfigurationException | SAXException | IOException e) {
-            e.printStackTrace();
-        }
+            //инициализация прав
+            right = new Right(document.getElementsByTagName("Права").item(0));
     }
-
-    public static Parser getInstance() {
+    public static Parser getInstance() throws IOException, SAXException, ParserConfigurationException {
+        if (instance==null) instance =new Parser();
         return instance;
     }
 
-    public void parseFile(File f) throws IOException, SAXException, ParserConfigurationException {
+    public void parseFile(File f, float area) throws IOException, SAXException, ParserConfigurationException {
+        this.area = area;
         DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
         Document d = docBuilder.parse(f);
-        stringValueHashMap.forEach((s, field) -> {
-          //  System.out.println(">>>" + s + " " + field.getEntity());
-            if (field.getEntity() != null) {
-                switch (field.getEntity()) {
-                    case Node:
-                    case String:
-                        System.out.println(field.getEntity()+":: "+s + ": " + field.getValue(d));
-                        break;
-                    case NodeSet:
-                        System.out.println(field.getEntity()+":: "+s+": "+ Arrays.toString(field.getListValue(d).toArray()));
-                        break;
-                }
-            } else {
-                System.out.println("NULL:: "+s + ": " + field.getValue(d));
-            }
-        });
-
+        document = d;
+        list= right.getValue(d);
+    //    System.out.println(list.size());
     }
 
     public void save(File f) throws IOException {
@@ -91,26 +75,36 @@ public class Parser {
         HSSFSheet sheet = workbook.createSheet("FirstSheet");
 
         HSSFRow rowhead = sheet.createRow((short) 0);
-        roomInfo.init(); // проверяем целостность данных
-        for (int i = 0; i < seq.size(); i++) { // стобцы
-            String xmlName = stringValueHashMap.get(seq.get(i)).getXmlName();
-            rowhead.createCell(i).setCellValue(xmlName);
-            ArrayList<String> list = roomInfo.getValue(xmlName);
-            for (int j = 0; j < list.size(); j++) {
-                if (sheet.getRow(j + 1) == null) sheet.createRow(j + 1);
-                sheet.getRow(j + 1).createCell(i).setCellValue(list.get(j));
+
+        for (int i = 0; i <xmlFields.size() ; i++) {
+            rowhead.createCell(i+1).setCellValue(xmlFields.get(i));
+        }
+        rowhead.createCell(xmlFields.size()).setCellValue("Площадь дома");
+
+        for (int i = 0; i <list.size() ; i++) {
+            for (int j = 0; j <xmlFields.size() ; j++) {
+                if (sheet.getRow(i+1)==null) sheet.createRow(i+1);
+                String cellValue =list.get(i).get(xmlFields.get(j));
+                String rowName = xmlFields.get(j);
+                if(cellValue==null)  cellValue =commons.get(j).getValue(document);
+                if (rowName.equals("Доля_собственника")){
+                    if (cellValue.equals("")|| cellValue.trim().equals("Весь объем")) {
+                        cellValue="1" ;
+                    }
+                }
+                sheet.getRow(i+1).createCell(j).setCellValue(cellValue);
             }
+            sheet.getRow(i+1).createCell(xmlFields.size()).setCellValue(area);
         }
 
-        for (int i = sheet.getFirstRowNum(); i < sheet.getLastRowNum(); i++) {
-            sheet.autoSizeColumn(i, true);
-        }
         FileOutputStream fileOut = new FileOutputStream(f);
         workbook.write(fileOut);
         fileOut.flush();
         fileOut.close();
-        System.out.println("Your excel file has been generated!");
+        System.out.println(f.getName()+" DONE!");
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
     }
+
 
 
 }

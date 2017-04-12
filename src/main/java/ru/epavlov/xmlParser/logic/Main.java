@@ -1,6 +1,7 @@
 package ru.epavlov.xmlParser.logic;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -28,11 +29,12 @@ public class Main {
         DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
         Document d= docBuilder.parse(new File("C:\\Users\\epavlov\\Desktop\\xmlEugene\\kp_b39c766e-1458-4658-a5c0-5b2dcb4ea495.xml"));
         XPath xpath = XPathFactory.newInstance().newXPath();
-        String expression = "//Area/text()";
+        String expression = "//ExtractObject/ObjectRight/Right[2]";
 //        NodeList list= (NodeList) xpath.evaluate(expression, d, XPathConstants.NODESET);
 //        for (int i = 0; i <list.getLength() ; i++) {
 //            System.out.println(list.item(i).getTextContent());
 //        }
-        System.out.println(xpath.evaluate(expression, d, XPathConstants.STRING));
+        Node node = (Node) xpath.evaluate(expression, d, XPathConstants.NODE);
+        System.out.println(node.getTextContent());
     }
 }
