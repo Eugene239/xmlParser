@@ -42,7 +42,7 @@ public class Right {
 
     public ArrayList<HashMap<String,String>> getValue(Document d){
         this.document = d;
-        list.clear();
+      //  list.clear();
         try {
             XPath path = XPathFactory.newInstance().newXPath();
             NodeList  list= (NodeList) path.evaluate(xpathGeneral,document, XPathConstants.NODESET);
@@ -74,6 +74,9 @@ public class Right {
                 }
             });
         list.add(xmlName_Value);
+    }
+    public void clear(){
+        list.clear();
     }
 
 

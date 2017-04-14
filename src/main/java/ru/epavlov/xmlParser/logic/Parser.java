@@ -71,13 +71,15 @@ public class Parser {
     }
 
     public void save(File f) throws IOException {
-        HSSFWorkbook workbook = new HSSFWorkbook();
-        HSSFSheet sheet = workbook.createSheet("FirstSheet");
+        HSSFWorkbook workbook = new HSSFWorkbook(getClass().getClassLoader().getResourceAsStream("CommonMacroses.xls"));
+        HSSFSheet sheet = workbook.getSheet("Лист2");
+        if  (sheet==null) sheet= workbook.createSheet("Лист2");
 
+//         workbook.cloneSheet()
         HSSFRow rowhead = sheet.createRow((short) 0);
 
         for (int i = 0; i <xmlFields.size() ; i++) {
-            rowhead.createCell(i+1).setCellValue(xmlFields.get(i));
+            rowhead.createCell(i).setCellValue(xmlFields.get(i));
         }
         rowhead.createCell(xmlFields.size()).setCellValue("Площадь дома");
 
@@ -103,6 +105,7 @@ public class Parser {
         fileOut.close();
         System.out.println(f.getName()+" DONE!");
         System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        right.clear();
     }
 
 

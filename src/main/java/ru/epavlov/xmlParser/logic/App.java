@@ -22,15 +22,17 @@ public class App {
     }
     public static void checkList() throws IOException, SAXException {
         File f =new File("C:\\Users\\epavlov\\Desktop\\xmlEugene");
+        try {
             for (File f_ : f.listFiles()) {
-                try {
+                if (f_.getName().contains(".xml"))
                 Parser.getInstance().parseFile(f_,500.4f);
-                Parser.getInstance().save(new File("C:\\Users\\epavlov\\Projects\\xmlParser\\src\\main\\resources\\"+f_.getName().split(".xml")[0]+".xls"));
-                } catch (Exception e){
-                    System.out.println(f_.getName());
-                    e.printStackTrace();
-                }
             }
+        Parser.getInstance().save(new File("C:\\Users\\epavlov\\Projects\\xmlParser\\src\\main\\resources\\CommonMacroses.xls"));
+        } catch (Exception e){
+           // System.out.println(f_.getName());
+            e.printStackTrace();
+        }
+
     }
     public static void checkFile(File f) throws IOException, SAXException, ParserConfigurationException {
         Parser.getInstance().parseFile(f,44.f);
