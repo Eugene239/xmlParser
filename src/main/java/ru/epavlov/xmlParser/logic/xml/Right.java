@@ -68,7 +68,12 @@ public class Right {
             hashMapXpath.forEach((xmlName, p) -> {
                 String xpath= xpathGeneral+"["+(i+1)+"]"+p;
                 try {
-                    xmlName_Value.put(xmlName,path.evaluate(xpath,document, XPathConstants.STRING).toString());
+                   // System.out.println(xmlName+" "+path.evaluate(xpath,document, XPathConstants.STRING).toString());
+                    String value = path.evaluate(xpath,document, XPathConstants.STRING).toString();
+                    if (xmlName.equals("ФИО") && value.equals("")){
+                        xmlName_Value.put(xmlName, path.evaluate("//Owner//Governance/Name/text()",document, XPathConstants.STRING).toString());
+                    }else xmlName_Value.put(xmlName,value);
+
                 } catch (XPathExpressionException e) {
                     e.printStackTrace();
                 }

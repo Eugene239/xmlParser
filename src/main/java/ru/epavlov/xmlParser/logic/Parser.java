@@ -83,8 +83,20 @@ public class Parser {
         }
         rowhead.createCell(xmlFields.size()).setCellValue("Площадь дома");
 
+        for (int i = 0; i <list.size() ; i++) { // очищаем пустые
+            if (list.get(i).get("Номер_свидетельства").equals("")){
+                list.remove(i);
+            }
+        }
+
         for (int i = 0; i <list.size() ; i++) {
+            if (list.get(i).get("Номер_свидетельства").equals("")){
+                System.out.println(list.get(i).toString());
+            }
+
+
             for (int j = 0; j <xmlFields.size() ; j++) {
+
                 if (sheet.getRow(i+1)==null) sheet.createRow(i+1);
                 String cellValue =list.get(i).get(xmlFields.get(j));
                 String rowName = xmlFields.get(j);
