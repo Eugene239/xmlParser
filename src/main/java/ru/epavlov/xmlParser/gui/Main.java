@@ -12,9 +12,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
+import org.xml.sax.SAXException;
+import ru.epavlov.xmlParser.logic.MacroRunner;
 import ru.epavlov.xmlParser.logic.Parser;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
+import java.io.IOException;
 
 public class Main extends Application {
     private File dir;
@@ -89,9 +93,6 @@ public class Main extends Application {
                             try {
                                 if (f.getName().contains(".xml")) {
                                     Parser.getInstance().parseFile(f, Float.parseFloat(area.getText()));
-                                    File out = new File(dir.getPath() + "/out/");
-                                    if (!out.exists()) out.mkdir();
-                                    Parser.getInstance().save(new File(out.getPath() + "/" + f.getName().split(".xml")[0] + ".xls"));
                                 }
                                 x++;
                                 int finalX = x;
@@ -107,8 +108,23 @@ public class Main extends Application {
                                 continue;
                             }
                         }
+
+                        try {
+                            Parser.getInstance().save(new File(Parser.OUTPUT_FILE)); //запуск сохранения
+                        } catch (IOException | SAXException | ParserConfigurationException e) {
+                            e.printStackTrace();
+                        }
                     }
                     System.out.println("Thread done");
+                    try {
+                        MacroRunner.start(new File(Parser.OUTPUT_FILE));
+                    } catch (IOException e) {
+                        Platform.runLater(() -> {
+                            items.add(e.toString());
+                        });
+                        System.err.println("MacroRunner:: "+e.toString());
+                        //e.printStackTrace();
+                    }
                 }).start();
             }
         });

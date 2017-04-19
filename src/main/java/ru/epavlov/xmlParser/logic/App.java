@@ -27,7 +27,7 @@ public class App {
                 if (f_.getName().contains(".xml"))
                 Parser.getInstance().parseFile(f_,500.4f);
             }
-        Parser.getInstance().save(new File("C:\\Users\\epavlov\\Projects\\xmlParser\\src\\main\\resources\\CommonMacroses.xls"));
+        Parser.getInstance().save(new File(Parser.OUTPUT_FILE));
         } catch (Exception e){
            // System.out.println(f_.getName());
             e.printStackTrace();
