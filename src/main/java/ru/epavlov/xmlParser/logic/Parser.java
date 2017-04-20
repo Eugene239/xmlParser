@@ -78,7 +78,7 @@ public class Parser {
 
         for (int i = 0; i <data.size() ; i++) { //rows
             HashMap<String,String> map = data.get(i);
-            System.out.println(i+":>>>>>>>>>>>>");
+           // System.out.println(i+":>>>>>>>>>>>>");
             if (sheet.getRow(i+1)==null) sheet.createRow(i+1);
             for (int j = 0; j <fields.length ; j++) {
                 String field = fields[j];
@@ -87,7 +87,7 @@ public class Parser {
                 if (field.equals("ФИО") && value.equals("")) value= "Санкт-Петербург";
                 if (field.equals("Доля_собственника") && value.equals("")|| value.trim().equals("Весь объем")) value= "1";
                 sheet.getRow(i).createCell(j).setCellValue(value);
-                System.out.println(field+" "+value);
+               // System.out.println(field+" "+value);
             }
         }
         FileOutputStream fileOut = new FileOutputStream(f);
