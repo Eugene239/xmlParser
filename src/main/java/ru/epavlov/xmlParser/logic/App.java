@@ -29,7 +29,6 @@ public class App {
             }
         Parser.getInstance().save(new File(Parser.OUTPUT_FILE));
         } catch (Exception e){
-           // System.out.println(f_.getName());
             e.printStackTrace();
         }
 

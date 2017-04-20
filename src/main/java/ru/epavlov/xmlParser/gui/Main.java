@@ -103,7 +103,7 @@ public class Main extends Application {
 
                             } catch (Exception e) {
                                 Platform.runLater(() -> {
-                                    items.add(e.toString());
+                                    items.add(e.getMessage());
                                 });
                                 continue;
                             }
@@ -120,7 +120,7 @@ public class Main extends Application {
                         MacroRunner.start(new File(Parser.OUTPUT_FILE));
                     } catch (IOException e) {
                         Platform.runLater(() -> {
-                            items.add(e.toString());
+                            items.add(e.getMessage());
                         });
                         System.err.println("MacroRunner:: "+e.toString());
                         //e.printStackTrace();

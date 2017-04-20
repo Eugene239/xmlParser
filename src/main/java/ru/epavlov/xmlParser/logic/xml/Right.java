@@ -3,8 +3,9 @@ package ru.epavlov.xmlParser.logic.xml;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import ru.epavlov.xmlParser.logic.Parser;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -19,69 +20,60 @@ import java.util.HashMap;
  * <p> Это программное обеспечение является собственностью ESTP-SRO.</p>
  *
  * @author <a href="http://estp.ru/">ESTP-SRO</a>
- * @version 1.0 Created 12.04.2017, 10:08
+ * @version 1.0 Created 20.04.2017, 11:18
  */
 public class Right {
-    private Document document;
-    private String xpathGeneral="";
-    private HashMap<String,String> hashMapXpath = new HashMap<>(); //мапа отображений
-    private ArrayList<HashMap<String,String>> list =new ArrayList<>(); // лист всех значений
-    public Right(Node setNode){
-        xpathGeneral = setNode.getAttributes().getNamedItem("xpath").getTextContent();
-        for (int i = 0; i <setNode.getChildNodes().getLength() ; i++) {
-            Node node= setNode.getChildNodes().item(i);
-            if (node.getNodeType()==Node.ELEMENT_NODE){
-                Parser.xmlFields.add(node.getNodeName());
-                hashMapXpath.put(node.getNodeName(),node.getAttributes().getNamedItem("xpath").getTextContent());
+    private static Right instanse = new Right();
+    private HashMap<String,String> nameXpathMap = new HashMap<>(); // по имени получаем путь
+    private String xpathGeneral;
+    private Right(){
+        try {
+            DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+            Document document = docBuilder.parse(getClass().getClassLoader().getResourceAsStream("fields.xml"));
+            Node setNode = document.getElementsByTagName("Права").item(0);
+            xpathGeneral = setNode.getAttributes().getNamedItem("xpath").getTextContent();
+            for (int i = 0; i < setNode.getChildNodes().getLength(); i++) {
+                Node node = setNode.getChildNodes().item(i);
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    String xpath = node.getAttributes().getNamedItem("xpath").getTextContent();
+                    nameXpathMap.put(node.getNodeName(),xpath);
+                }
             }
+        }catch (Exception e){
+            e.printStackTrace();
         }
-//        hashMapXpath.forEach((s, s2) -> {
-//            System.out.println(s+" "+s2);
-//        });
+    }
+    public static Right getInstanse(){
+        return instanse;
     }
 
-    public ArrayList<HashMap<String,String>> getValue(Document d){
-        this.document = d;
-      //  list.clear();
+
+
+    public ArrayList<HashMap<String,String>> parse(Document document){
+        ArrayList<HashMap<String,String>> mapArrayList = new ArrayList<>();
+        XPath xpath = XPathFactory.newInstance().newXPath();
         try {
-            XPath path = XPathFactory.newInstance().newXPath();
-            NodeList  list= (NodeList) path.evaluate(xpathGeneral,document, XPathConstants.NODESET);
+            NodeList list= (NodeList) xpath.evaluate(xpathGeneral,document, XPathConstants.NODESET);
             for (int i = 0; i <list.getLength() ; i++) {
-                getIndexValue(i);
+                HashMap<String,String> map = new HashMap<>();
+                int finalI = i;
+                nameXpathMap.forEach((name, subPath)-> {
+                    String path = xpathGeneral+"["+(finalI +1)+"]"+subPath;
+                    String value="";
+                    try {
+                        value = xpath.evaluate(path,document, XPathConstants.STRING).toString();
+                    } catch (XPathExpressionException e) {
+                        e.printStackTrace();
+                    }
+                    map.put(name,value);
+                });
+                mapArrayList.add(map);
             }
         } catch (XPathExpressionException e) {
             e.printStackTrace();
         }
-
-//        list.forEach(stringStringHashMap -> {
-//            stringStringHashMap.forEach((s, s2) -> {
-//                System.out.println(s+" "+s2);
-//            });
-//            System.out.println(">>>>>>>>>>>>>>>>>");
-//        });
-       return list;
-    }
-
-    private void getIndexValue(int i){
-        HashMap<String,String> xmlName_Value = new HashMap<>();
-            XPath path = XPathFactory.newInstance().newXPath();
-            hashMapXpath.forEach((xmlName, p) -> {
-                String xpath= xpathGeneral+"["+(i+1)+"]"+p;
-                try {
-                   // System.out.println(xmlName+" "+path.evaluate(xpath,document, XPathConstants.STRING).toString());
-                    String value = path.evaluate(xpath,document, XPathConstants.STRING).toString();
-                    if (xmlName.equals("ФИО") && value.equals("")){
-                        xmlName_Value.put(xmlName, path.evaluate("//Owner//Governance/Name/text()",document, XPathConstants.STRING).toString());
-                    }else xmlName_Value.put(xmlName,value);
-
-                } catch (XPathExpressionException e) {
-                    e.printStackTrace();
-                }
-            });
-        list.add(xmlName_Value);
-    }
-    public void clear(){
-        list.clear();
+        return mapArrayList;
     }
 
 
