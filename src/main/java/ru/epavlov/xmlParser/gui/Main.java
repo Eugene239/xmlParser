@@ -12,11 +12,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
-import org.xml.sax.SAXException;
-import ru.epavlov.xmlParser.logic.MacroRunner;
 import ru.epavlov.xmlParser.logic.Parser;
 
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 
@@ -30,18 +27,11 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 
-      //  System.out.println(getClass().getResource("gui.fxml").toURI());
-        //Parent root = FXMLLoader.load(");
+
         ListView<String> list = new ListView<String>();
         ObservableList<String> items = FXCollections.observableArrayList ();
-//        ObservableList<String> items = FXCollections.observableArrayList();
-//        File f = new File("C:\\Users\\epavlov\\Desktop\\xmlEugene");
-//        for (File f_:f.listFiles()) {
-//            items.add(f_.getName());
-//        }
         list.setItems(items);
-//        list.setMinWidth(600);
-//        list.setMinHeight(475);
+
         error.setTextFill(Color.RED);
         start.setMinWidth(50);
         label.setMinWidth(70);
@@ -54,7 +44,7 @@ public class Main extends Application {
         b.setOnMouseClicked(l->{
             dir= directoryChooser.showDialog(primaryStage);
             if (dir!=null && dir.exists()) label.setText("0/"+size(dir));
-           //  System.out.println(dir.getAbsolutePath());
+
         });
         final ProgressBar pb = new ProgressBar(0);
         pb.setMinWidth(520);
@@ -111,20 +101,20 @@ public class Main extends Application {
 
                         try {
                             Parser.getInstance().save(new File(Parser.OUTPUT_FILE)); //запуск сохранения
-                        } catch (IOException | SAXException | ParserConfigurationException e) {
+                        } catch (IOException  e) {
                             e.printStackTrace();
                         }
                     }
                     System.out.println("Thread done");
-                    try {
-                        MacroRunner.start(new File(Parser.OUTPUT_FILE));
-                    } catch (IOException e) {
-                        Platform.runLater(() -> {
-                            items.add(e.getMessage());
-                        });
-                        System.err.println("MacroRunner:: "+e.toString());
-                        //e.printStackTrace();
-                    }
+//                    try {
+//                        //MacroRunner.start(new File(Parser.OUTPUT_FILE));
+//                    } catch (IOException e) {
+//                        Platform.runLater(() -> {
+//                            items.add(e.getMessage());
+//                        });
+//                        System.err.println("MacroRunner:: "+e.toString());
+//                        //e.printStackTrace();
+//                    }
                 }).start();
             }
         });

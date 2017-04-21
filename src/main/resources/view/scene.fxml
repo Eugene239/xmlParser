@@ -13,6 +13,7 @@
       <Label layoutX="14.0" layoutY="348.0" text="Площадь дома" AnchorPane.leftAnchor="20.0" />
       <Label layoutX="14.0" layoutY="317.0" text="Процесс:" AnchorPane.leftAnchor="20.0" />
       <TextField fx:id="area" layoutX="105.0" layoutY="344.0" prefHeight="25.0" prefWidth="50.0" AnchorPane.leftAnchor="110.0" />
-      <Label fx:id="processText" layoutX="82.0" layoutY="317.0" prefHeight="25.0" prefWidth="110.0" />
+      <Label fx:id="processText" layoutX="80.0" layoutY="313.0" prefHeight="25.0" prefWidth="250.0" />
+      <Button fx:id="dirChooser" layoutX="192.0" layoutY="344.0" mnemonicParsing="false" text="Выбрать папку" />
    </children>
 </AnchorPane>

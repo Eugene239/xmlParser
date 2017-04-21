@@ -1,18 +1,14 @@
 package ru.epavlov.xmlParser.gui;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Описание класса<br/>
@@ -24,6 +20,9 @@ import java.io.IOException;
  * @version 1.0 Created 21.04.2017, 11:39
  */
 public class Item extends ListCell<String> {
+
+    public static ArrayList<Item> list = new ArrayList<>();
+    private ItemModel model;
     @FXML
     private Label name;
     @FXML
@@ -32,58 +31,41 @@ public class Item extends ListCell<String> {
     private Button delete;
     private Parent scene;
     String lastItem;
-    public Item() throws IOException {
+
+    public Label getStatus() {
+        return status;
+    }
+
+    public Label getName() {
+        return name;
+    }
+
+    public Item()  {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("view/item.fxml"));
         fxmlLoader.setController(this);
-        scene= fxmlLoader.load();
+        try {
+            scene= fxmlLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     @Override
-    public void updateItem(String string, boolean empty)
-    {
+    public void updateItem(String string, boolean empty) {
         super.updateItem(string,empty);
         if (empty) {
-            lastItem = null;
             setGraphic(null);
         } else {
-            lastItem = string;
-            name.setText(string);
-            status.setText("Загружено");
+            model = Model.getInstance().get(string);
+            name.setText(model.getName());
+            model.getStatus().subscribe(s->{
+                status.setText(s);
+            });
+            delete.setOnMouseClicked(l->{
+                Model.getInstance().remove(string);
+            });
             setGraphic(scene.lookup("HBox"));
         }
     }
 
 
-    static class XCell extends ListCell<String> {
-        HBox hbox = new HBox();
-        Label label = new Label("(empty)");
-        Pane pane = new Pane();
-        Button button = new Button("(>)");
-        String lastItem;
-
-        public XCell() {
-            super();
-            hbox.getChildren().addAll(label, pane, button);
-            HBox.setHgrow(pane, Priority.ALWAYS);
-            button.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    System.out.println(lastItem + " : " + event);
-                }
-            });
-        }
-
-        @Override
-        protected void updateItem(String item, boolean empty) {
-            super.updateItem(item, empty);
-            setText(null);  // No text in label of super class
-            if (empty) {
-                lastItem = null;
-                setGraphic(null);
-            } else {
-                lastItem = item;
-                label.setText(item!=null ? item : "<null>");
-                setGraphic(hbox);
-            }
-        }
-    }
 }

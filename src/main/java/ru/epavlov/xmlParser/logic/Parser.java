@@ -42,8 +42,12 @@ public class Parser {
         Document document = docBuilder.parse(getClass().getClassLoader().getResourceAsStream("fields.xml"));
     }
 
-    public static Parser getInstance() throws IOException, SAXException, ParserConfigurationException {
-        if (instance == null) instance = new Parser();
+    public static Parser getInstance() {
+        if (instance == null) try {
+            instance = new Parser();
+        } catch (ParserConfigurationException | IOException | SAXException e) {
+            e.printStackTrace();
+        }
         return instance;
     }
 
@@ -114,6 +118,8 @@ public class Parser {
         }
     }
 
-
+    public void clear(){
+        data.clear();
+    }
 
 }

@@ -14,29 +14,34 @@ import java.io.InputStream;
  * @version 1.0 Created 19.04.2017, 15:02
  */
 public class MacroRunner {
+    public interface RunnerListner{
+        void onDone(String s);
+    }
     public static final String PATH  = System.getProperty("user.dir")+"\\MacrosRunner.exe";
-
-    public static void start(File f) throws IOException {
-        ProcessBuilder pb = new ProcessBuilder(PATH, f.getAbsolutePath());
+    private static RunnerListner listner;
+    public static void start(File f, RunnerListner listner) throws IOException {
+        MacroRunner.listner = listner;
+        System.out.println(PATH+ " \""+ f.getAbsolutePath() +"\"");
+        ProcessBuilder pb = new ProcessBuilder(PATH,"\""+ f.getAbsolutePath() +"\"");
         pb.redirectErrorStream(true);
         Process p = pb.start();
-     //   readWithIS(p);
+        readWithIS(p);
     }
    private static void readWithIS(Process p) throws IOException {
         InputStream is  = p.getInputStream();
         //String s;
         int val;
         String s="";
+       //System.out.println();
         while (p.isAlive()) {
             while ((val = is.read()) != -1) {
-                if ((char) val != System.getProperty("line.separator").toCharArray()[0]) s += (char) val;
-                else {
-                    System.out.println(">"+s);
-                    //s = "";
-
-                }
+                if ((val >='a' && val<='z') || (val>='A' && val<='Z'))
+                s+=(char) val;
             }
         }
+      // System.out.println(s);
+       listner.onDone(s);
+       //System.out.println("process dead");
     }
 
 }
