@@ -86,7 +86,7 @@ public class Parser {
                 if (field.equals("Площадь дома")) value= String.valueOf(area);
                 if (field.equals("ФИО") && value.equals("")) value= "Санкт-Петербург";
                 if (field.equals("Доля_собственника") && value.equals("")|| value.trim().equals("Весь объем")) value= "1";
-                sheet.getRow(i).createCell(j).setCellValue(value);
+                sheet.getRow(i+1).createCell(j).setCellValue(value);
                // System.out.println(field+" "+value);
             }
         }
