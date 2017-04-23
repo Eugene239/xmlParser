@@ -1,16 +1,8 @@
 package ru.epavlov.xmlParser.logic;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
 import java.io.File;
 import java.io.IOException;
 
@@ -21,20 +13,29 @@ import java.io.IOException;
  * <p> Это программное обеспечение является собственностью ESTP-SRO.</p>
  *
  * @author <a href="http://estp.ru/">ESTP-SRO</a>
- * @version 1.0 Created 11.04.2017, 16:19
+ * @version 1.0 Created 05.04.2017, 12:14
  */
 public class Main {
-    public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException, XPathExpressionException {
-        DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-        Document d= docBuilder.parse(new File("C:\\Users\\epavlov\\Desktop\\xmlEugene\\kp_b39c766e-1458-4658-a5c0-5b2dcb4ea495.xml"));
-        XPath xpath = XPathFactory.newInstance().newXPath();
-        String expression = "//ExtractObject/ObjectRight/Right[2]";
-//        NodeList list= (NodeList) xpath.evaluate(expression, d, XPathConstants.NODESET);
-//        for (int i = 0; i <list.getLength() ; i++) {
-//            System.out.println(list.item(i).getTextContent());
-//        }
-        Node node = (Node) xpath.evaluate(expression, d, XPathConstants.NODE);
-        System.out.println(node.getTextContent());
+    public static void main(String[] args) throws IOException, SAXException, ParserConfigurationException {
+        checkList();
+     //  checkFile(new File("C:\\Users\\epavlov\\Desktop\\xmlEugene\\kp_b39c766e-1458-4658-a5c0-5b2dcb4ea495.xml"));
     }
+    public static void checkList() throws IOException, SAXException {
+        File f =new File("F:\\xml\\");
+        try {
+            for (File f_ : f.listFiles()) {
+                if (f_.getName().contains(".xml"))
+                Parser.getInstance().parseFile(f_,500.4f);
+            }
+        Parser.getInstance().save(new File(Parser.OUTPUT_FILE));
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+    public static void checkFile(File f) throws IOException, SAXException, ParserConfigurationException {
+        Parser.getInstance().parseFile(f,44.f);
+        Parser.getInstance().save(new File("C:\\Users\\epavlov\\Projects\\xmlParser\\src\\main\\resources\\"+f.getName()+".xls"));
+    }
+
 }
