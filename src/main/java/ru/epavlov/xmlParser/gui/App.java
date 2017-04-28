@@ -92,7 +92,7 @@ public class App extends Application {
         saveBtn.setOnMouseClicked(l->{
             if ( (saver==null || !saver.isAlive()) && thread!=null && thread.isDone()) {
                 FileChooser fileChooser1 = new FileChooser();
-                FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XML таблица", "*.xls");
+                FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XLS файл", "*.xls");
                 fileChooser1.getExtensionFilters().add(extFilter);
                 File file = fileChooser1.showSaveDialog(primaryStage);
                 if (file != null) {
