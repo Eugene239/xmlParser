@@ -15,6 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.apache.log4j.Logger;
 import ru.epavlov.xmlParser.logic.Parser;
 import rx.Subscription;
 
@@ -24,6 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class App extends Application {
+    private static final String TAG = "["+ App.class.getSimpleName()+"]: ";
+    private static final Logger log = Logger.getLogger(App.class);
 
     public static void main(String[] args) {
         launch(args);
@@ -126,6 +129,7 @@ public class App extends Application {
         } catch (Exception e){
             //e.printStackTrace();
             processText.setText("Неверная площадь дома");
+            log.error(TAG+e.toString());
             System.err.println(area.getText()+" "+area.getText().length());
         }
     }

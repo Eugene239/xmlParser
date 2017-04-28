@@ -1,5 +1,6 @@
 package ru.epavlov.xmlParser.logic.xml;
 
+import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
@@ -23,6 +24,9 @@ import java.util.HashMap;
  * @version 1.0 Created 20.04.2017, 10:33
  */
 public class Room {
+    private static final String TAG = "["+ Room.class.getSimpleName()+"]: ";
+    private static final Logger log = Logger.getLogger(Room.class);
+
     private static Room instanse = new Room();
     private HashMap<String,String> nameXpathMap = new HashMap<>(); // по имени получаем путь
     private HashMap<String,ArrayList<String>> parmsMap =  new HashMap();  //по имени получаем параметры
@@ -50,6 +54,7 @@ public class Room {
                 }
             }
         }catch (Exception e ){
+            log.error(TAG+e.toString());
             e.printStackTrace();
         }
     }
@@ -84,6 +89,7 @@ public class Room {
                 value = val[0];
             }
         } catch (XPathExpressionException e) {
+            log.error(TAG+e.toString());
             e.printStackTrace();
         }
         return value;

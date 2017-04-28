@@ -48,7 +48,7 @@ public class ThreadSaver extends Thread implements MacroRunner.RunnerListner{
             MacroRunner.start(new File(Parser.OUTPUT_FILE),this);
         } catch (IOException e) {
             status.onNext("Ошибка запуска макроса");
-            System.err.println("MacroRunner:: "+e.toString());
+            //System.err.println("MacroRunner:: "+e.toString());
             log.error(TAG+ e.toString());
 
         }

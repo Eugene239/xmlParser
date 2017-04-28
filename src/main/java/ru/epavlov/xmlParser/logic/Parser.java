@@ -113,7 +113,7 @@ public class Parser {
         fileOut.flush();
         fileOut.close();
         workbook.close();
-        log.info(f.getName() + " DONE!");
+        log.info(f.getAbsolutePath() + " DONE!");
 //        System.out.println(f.getName() + " DONE!");
 //        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         data.clear();
