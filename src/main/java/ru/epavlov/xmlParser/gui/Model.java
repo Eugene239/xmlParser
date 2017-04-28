@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Описание класса<br/>
@@ -48,7 +49,7 @@ public class Model {
     public void saveFiles(File f){
         try {
             Parser.getInstance().save(f);
-        } catch (IOException e) {
+        } catch (IOException | SAXException | ParserConfigurationException e) {
             e.printStackTrace();
         }
     }
@@ -60,6 +61,22 @@ public class Model {
             }
         }
         rxFiles.onNext(list);
+    }
+    public void addFiles(List<File> list){
+        if (rxFiles.getValue()!=null){
+            ArrayList<File> files= rxFiles.getValue();
+            list.forEach(f->{
+                if (!files.contains(f) && f.getName().contains(".xml")) files.add(f);
+            });
+            rxFiles.onNext(files);
+        }else {
+            ArrayList<File> files = new ArrayList<>();
+            files.addAll(list);
+            rxFiles.onNext(files);
+        }
+    }
+    public void clear(){
+        rxFiles.onNext(new ArrayList<>());
     }
     public void remove(String s){
         ArrayList<File> list = rxFiles.getValue();

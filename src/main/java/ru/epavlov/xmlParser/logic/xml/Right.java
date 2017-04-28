@@ -30,7 +30,8 @@ public class Right {
         try {
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-            Document document = docBuilder.parse(getClass().getClassLoader().getResourceAsStream("fields.xml"));
+           // Document document = docBuilder.parse(getClass().getClassLoader().getResourceAsStream("fields.xml"));
+            Document document = docBuilder.parse(System.getProperty("user.dir")+"/fields.xml");
             Node setNode = document.getElementsByTagName("Права").item(0);
             xpathGeneral = setNode.getAttributes().getNamedItem("xpath").getTextContent();
             for (int i = 0; i < setNode.getChildNodes().getLength(); i++) {

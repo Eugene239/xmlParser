@@ -22,29 +22,36 @@ import java.util.ArrayList;
  */
 public class ThreadParser extends Thread implements MacroRunner.RunnerListner {
     private BehaviorSubject<String> status = BehaviorSubject.create();
-
+    private Parser parser;
     @Override
     public void run() {
         super.run();
         status.onNext("Запуск");
         ArrayList<File> list= Model.getInstance().getRxFiles().getValue();
+        try {
+            parser = Parser.getInstance();
+        }catch ( Exception e) {
+            status.onNext("Не найден файл конфигурации");
+        }
         for (File f: list){
             try {
-                Parser.getInstance().parseFile(f,Model.getInstance().getArea());
-               Platform.runLater(()->{Model.getInstance().get(f.getName()).getStatus().onNext("Готов");});
-               status.onNext("Парсинг "+f.getName());
+                parser.parseFile(f,Model.getInstance().getArea());
+                Platform.runLater(()->{Model.getInstance().get(f.getName()).getStatus().onNext("Готов");});
+                status.onNext("Парсинг "+f.getName());
             } catch (IOException | SAXException | ParserConfigurationException e) {
                 Platform.runLater(()->{Model.getInstance().get(f.getName()).getStatus().onNext("Ошибка");});
-               // Model.getInstance().get(f.getName()).getStatus().onNext("Ошибка");
+                // Model.getInstance().get(f.getName()).getStatus().onNext("Ошибка");
                 e.printStackTrace();
             }
         }
-        try {
-            Parser.getInstance().save(new File(Parser.OUTPUT_FILE));
+
+        try{
+            if (parser!=null)  parser.save(new File(Parser.OUTPUT_FILE));
         } catch (IOException e) {
             status.onNext("Ошибка сохранения");
             e.printStackTrace();
         }
+
         try {
             status.onNext("Запуск макроса");
             MacroRunner.start(new File(Parser.OUTPUT_FILE),this);
@@ -53,7 +60,7 @@ public class ThreadParser extends Thread implements MacroRunner.RunnerListner {
             System.err.println("MacroRunner:: "+e.toString());
             //e.printStackTrace();
         }
-      //  this.stop();
+        //  this.stop();
     }
 
     public BehaviorSubject<String> getStatus() {
@@ -62,11 +69,11 @@ public class ThreadParser extends Thread implements MacroRunner.RunnerListner {
 
     @Override
     public void onDone(String s) {
-       // System.out.println(s+" "+s.length());
+        // System.out.println(s+" "+s.length());
         switch (s){
             case "Error": status.onNext("Ошибка макроса"); break;
             case "Done": status.onNext("Готово"); break;
         }
-       // System.out.println("thread:"+s);
+        // System.out.println("thread:"+s);
     }
 }

@@ -1,3 +1,4 @@
+
 package ru.epavlov.xmlParser.logic;
 
 import java.io.File;
@@ -27,21 +28,17 @@ public class MacroRunner {
         Process p = pb.start();
         readWithIS(p);
     }
-   private static void readWithIS(Process p) throws IOException {
+    private static void readWithIS(Process p) throws IOException {
         InputStream is  = p.getInputStream();
-        //String s;
         int val;
         String s="";
-       //System.out.println();
         while (p.isAlive()) {
             while ((val = is.read()) != -1) {
                 if ((val >='a' && val<='z') || (val>='A' && val<='Z'))
-                s+=(char) val;
+                    s+=(char) val;
             }
         }
-      // System.out.println(s);
-       listner.onDone(s);
-       //System.out.println("process dead");
+        listner.onDone(s);
     }
 
 }

@@ -33,8 +33,8 @@ public class Room {
         try {
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-            Document document = docBuilder.parse(getClass().getClassLoader().getResourceAsStream("fields.xml"));
-
+           // Document document = docBuilder.parse(getClass().getClassLoader().getResourceAsStream("fields.xml"));
+            Document document = docBuilder.parse(System.getProperty("user.dir")+"/fields.xml");
             //инициализация общих данных
             Node common = document.getElementsByTagName("Общее").item(0);
             for (int i = 0; i < common.getChildNodes().getLength(); i++) {
@@ -61,7 +61,7 @@ public class Room {
         HashMap<String,String> col = new HashMap<>();
         nameXpathMap.forEach((name,path)->{
             col.put(name,getXpathValue(path,d,parmsMap.get(name)));
-        //    System.out.println(name+": "+ getXpathValue(path,d,parmsMap.get(name)));
+            //    System.out.println(name+": "+ getXpathValue(path,d,parmsMap.get(name)));
         });
         return col;
     }

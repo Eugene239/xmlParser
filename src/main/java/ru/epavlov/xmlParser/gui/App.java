@@ -13,12 +13,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import rx.Subscription;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class App extends Application {
 
@@ -26,6 +28,7 @@ public class App extends Application {
         launch(args);
     }
     private DirectoryChooser directoryChooser =new DirectoryChooser();
+
     private Subscription subscription;
     private ThreadParser thread;
     @FXML
@@ -37,7 +40,11 @@ public class App extends Application {
     @FXML
     Button start;
     @FXML
+    Button fileChooser;
+    @FXML
     Label processText;
+    @FXML
+    Button clear;
     @Override
     public void start(Stage primaryStage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("view/scene.fxml"));
@@ -65,9 +72,18 @@ public class App extends Application {
 
         });
         start.setOnMouseClicked(l->{
-           parse();
+            parse();
         });
+        fileChooser.setOnMouseClicked(l->{
+            FileChooser fileChooser = new FileChooser();
+            List<File> list = fileChooser.showOpenMultipleDialog(primaryStage);
+            if (list!=null) Model.getInstance().addFiles(list);
+            //System.out.println("fileChooser");
 
+        });
+        clear.setOnMouseClicked(l->{
+            Model.getInstance().clear();
+        });
         primaryStage.setTitle("xmlParser");
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);
@@ -80,7 +96,8 @@ public class App extends Application {
     }
     private void parse(){
         try {
-            float f = Float.parseFloat(area.getText());
+            String text = area.getText().replace(",",".");
+            float f = Float.parseFloat(text);
             Model.getInstance().setArea(f);
             if (thread==null || !thread.isAlive()) {
                 thread = new ThreadParser();
@@ -93,9 +110,9 @@ public class App extends Application {
                 thread.start();
             }
         } catch (Exception e){
-           e.printStackTrace();
+            //e.printStackTrace();
             processText.setText("Неверная площадь дома");
-            System.out.println(area.getText()+" "+area.getText().length());
+            System.err.println(area.getText()+" "+area.getText().length());
         }
     }
 

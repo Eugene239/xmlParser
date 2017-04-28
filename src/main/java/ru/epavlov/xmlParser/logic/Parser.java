@@ -4,6 +4,7 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 import ru.epavlov.xmlParser.logic.xml.Right;
 import ru.epavlov.xmlParser.logic.xml.Room;
@@ -13,6 +14,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -29,25 +31,41 @@ import java.util.HashMap;
 public class Parser {
     public static  String OUTPUT_FILE = System.getProperty("user.dir") + "\\result.xls";
 
-    String[] fields= {"Улица","Дом","Корпус","Литера","Квартира","Площадь_квартиры","ФИО","Номер_свидетельства","Дата_свидетельства","Доля_собственника","Площадь дома"};
+    // String[] fields= {"Улица","Дом","Корпус","Литера","Квартира","Площадь_квартиры","ФИО","Номер_свидетельства","Дата_свидетельства","Доля_собственника","Площадь дома"};
 
+    private ArrayList<String> headers = new ArrayList<>();
     private Float area;
-    //public static ArrayList<String> xmlFields = new ArrayList<>();
     private ArrayList<HashMap<String,String>> data= new ArrayList();
     private static Parser instance;
 
     private Parser() throws ParserConfigurationException, IOException, SAXException {
-        DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-        Document document = docBuilder.parse(getClass().getClassLoader().getResourceAsStream("fields.xml"));
+        parseHeaders();
+
     }
 
-    public static Parser getInstance() {
-        if (instance == null) try {
+    private void parseHeaders() throws ParserConfigurationException, IOException, SAXException {
+        DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+        Document document = docBuilder.parse(System.getProperty("user.dir")+"/fields.xml");
+     //   Document document = docBuilder.parse(getClass().getClassLoader().getResourceAsStream("fields.xml"));
+        Node node = document.getElementsByTagName("Последовательность").item(0);
+        String[] arr= node.getTextContent().split(",");
+        Arrays.stream(arr).forEach(s -> {
+            String str =s.trim();
+            //  System.out.println(str);
+            headers.add(str);
+        });
+        //   headers =new ArrayList<>(Arrays.asList(arr));
+
+        // headers.forEach(System.out::println);
+        // System.out.println(node.getTextContent());
+    }
+    public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
+        Parser.getInstance();
+    }
+    public static Parser getInstance() throws IOException, SAXException, ParserConfigurationException {
+        if (instance == null)
             instance = new Parser();
-        } catch (ParserConfigurationException | IOException | SAXException e) {
-            e.printStackTrace();
-        }
         return instance;
     }
 
@@ -56,14 +74,14 @@ public class Parser {
         DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
         Document d = docBuilder.parse(f);
-      //  System.out.println("################ "+f.getName()+" ###############");
+        //  System.out.println("################ "+f.getName()+" ###############");
         HashMap<String,String> roomMap= Room.getInstanse().parse(d);
         ArrayList<HashMap<String,String>> rightList=  Right.getInstanse().parse(d);
         rightList.forEach(rightMap->{
             rightMap.putAll(roomMap);
             rightMap.forEach((s,s1)->{
             });
-             data.add(rightMap);
+            data.add(rightMap);
         });
     }
 
@@ -75,23 +93,24 @@ public class Parser {
         if (sheet == null) sheet = workbook.createSheet("Лист1");
         //создаем шапку
         HSSFRow rowhead = sheet.createRow((short) 0);
-        for (int i = 0; i <fields.length ; i++) {
-            rowhead.createCell(i).setCellValue(fields[i]);
+        for (int i = 0; i <headers.size() ; i++) {
+            rowhead.createCell(i).setCellValue(headers.get(i));
         }
 
-
+        //   System.out.println(data.size());
         for (int i = 0; i <data.size() ; i++) { //rows
             HashMap<String,String> map = data.get(i);
-           // System.out.println(i+":>>>>>>>>>>>>");
             if (sheet.getRow(i+1)==null) sheet.createRow(i+1);
-            for (int j = 0; j <fields.length ; j++) {
-                String field = fields[j];
-                String value = map.get(fields[j]);
+            for (int j = 0; j <headers.size() ; j++) {
+                String field = headers.get(j);
+                String value = map.get(headers.get(j));
+                value= value==null? "":value;
                 if (field.equals("Площадь дома")) value= String.valueOf(area);
                 if (field.equals("ФИО") && value.equals("")) value= "Санкт-Петербург";
                 if (field.equals("Доля_собственника") && value.equals("")|| value.trim().equals("Весь объем")) value= "1";
+                if (field.equals("Площадь_квартиры")) value= value.replace(".",",");
+                if (field.equals("Площадь дома")) value= value.replace(".",",");
                 sheet.getRow(i+1).createCell(j).setCellValue(value);
-               // System.out.println(field+" "+value);
             }
         }
         FileOutputStream fileOut = new FileOutputStream(f);
