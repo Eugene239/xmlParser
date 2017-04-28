@@ -1,5 +1,6 @@
 package ru.epavlov.xmlParser.logic.xml;
 
+import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -23,6 +24,8 @@ import java.util.HashMap;
  * @version 1.0 Created 20.04.2017, 11:18
  */
 public class Right {
+    private static final String TAG = "["+ Right.class.getSimpleName()+"]: ";
+    private static final Logger log = Logger.getLogger(Right.class);
     private static Right instanse = new Right();
     private HashMap<String,String> nameXpathMap = new HashMap<>(); // по имени получаем путь
     private String xpathGeneral;
@@ -42,6 +45,7 @@ public class Right {
                 }
             }
         }catch (Exception e){
+            log.error(TAG+e.toString());
             e.printStackTrace();
         }
     }
@@ -65,6 +69,7 @@ public class Right {
                     try {
                         value = xpath.evaluate(path,document, XPathConstants.STRING).toString();
                     } catch (XPathExpressionException e) {
+                        log.error(TAG+"parse()"+e.toString());
                         e.printStackTrace();
                     }
                     map.put(name,value);
@@ -72,6 +77,7 @@ public class Right {
                 mapArrayList.add(map);
             }
         } catch (XPathExpressionException e) {
+            log.error(TAG+"parse()"+e.toString());
             e.printStackTrace();
         }
         return mapArrayList;

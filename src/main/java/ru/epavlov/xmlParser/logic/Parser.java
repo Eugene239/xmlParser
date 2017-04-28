@@ -1,5 +1,6 @@
 package ru.epavlov.xmlParser.logic;
 
+import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -29,9 +30,10 @@ import java.util.HashMap;
 //ObjectRight
 
 public class Parser {
-    public static  String OUTPUT_FILE = System.getProperty("user.dir") + "\\result.xls";
-
-    // String[] fields= {"Улица","Дом","Корпус","Литера","Квартира","Площадь_квартиры","ФИО","Номер_свидетельства","Дата_свидетельства","Доля_собственника","Площадь дома"};
+    private static final String TAG = "["+ Parser.class.getSimpleName()+"]: ";
+    private static final Logger log = Logger.getLogger(Parser.class);
+    //public static  String OUTPUT_FILE = System.getProperty("user.dir") + "\\result.xls";
+    public static  String OUTPUT_FILE =   "C:\\Users\\epavlov\\Desktop\\Новая папка"+"\\result.xls";
 
     private ArrayList<String> headers = new ArrayList<>();
     private Float area;
@@ -52,13 +54,8 @@ public class Parser {
         String[] arr= node.getTextContent().split(",");
         Arrays.stream(arr).forEach(s -> {
             String str =s.trim();
-            //  System.out.println(str);
             headers.add(str);
         });
-        //   headers =new ArrayList<>(Arrays.asList(arr));
-
-        // headers.forEach(System.out::println);
-        // System.out.println(node.getTextContent());
     }
     public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
         Parser.getInstance();
@@ -74,7 +71,6 @@ public class Parser {
         DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
         Document d = docBuilder.parse(f);
-        //  System.out.println("################ "+f.getName()+" ###############");
         HashMap<String,String> roomMap= Room.getInstanse().parse(d);
         ArrayList<HashMap<String,String>> rightList=  Right.getInstanse().parse(d);
         rightList.forEach(rightMap->{
@@ -86,7 +82,6 @@ public class Parser {
     }
 
     public void save(File f ) throws IOException{
-
         checkFile(f); // создаем новый файл
         HSSFWorkbook workbook = new HSSFWorkbook(new FileInputStream(f));
         HSSFSheet sheet = workbook.getSheet("Лист1");
@@ -117,9 +112,10 @@ public class Parser {
         workbook.write(fileOut);
         fileOut.flush();
         fileOut.close();
-        System.out.println(f.getName() + " DONE!");
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-
+        workbook.close();
+        log.info(f.getName() + " DONE!");
+//        System.out.println(f.getName() + " DONE!");
+//        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         data.clear();
     }
     private void checkFile(File f) throws IOException {

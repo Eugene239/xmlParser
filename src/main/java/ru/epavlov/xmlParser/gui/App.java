@@ -15,6 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import ru.epavlov.xmlParser.logic.Parser;
 import rx.Subscription;
 
 import java.io.File;
@@ -31,6 +32,7 @@ public class App extends Application {
 
     private Subscription subscription;
     private ThreadParser thread;
+    private ThreadSaver saver;
     @FXML
     TextField area;
     @FXML
@@ -45,6 +47,8 @@ public class App extends Application {
     Label processText;
     @FXML
     Button clear;
+    @FXML
+    Button saveBtn;
     @Override
     public void start(Stage primaryStage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("view/scene.fxml"));
@@ -78,11 +82,21 @@ public class App extends Application {
             FileChooser fileChooser = new FileChooser();
             List<File> list = fileChooser.showOpenMultipleDialog(primaryStage);
             if (list!=null) Model.getInstance().addFiles(list);
-            //System.out.println("fileChooser");
-
         });
         clear.setOnMouseClicked(l->{
             Model.getInstance().clear();
+        });
+        saveBtn.setOnMouseClicked(l->{
+            if ( (saver==null || !saver.isAlive()) && thread!=null && thread.isDone()) {
+                FileChooser fileChooser1 = new FileChooser();
+                FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XML таблица", "*.xls");
+                fileChooser1.getExtensionFilters().add(extFilter);
+                File file = fileChooser1.showSaveDialog(primaryStage);
+                if (file != null) {
+                    Parser.OUTPUT_FILE = file.getAbsolutePath();
+                    save();
+                }
+            }
         });
         primaryStage.setTitle("xmlParser");
         primaryStage.setResizable(false);
@@ -114,6 +128,17 @@ public class App extends Application {
             processText.setText("Неверная площадь дома");
             System.err.println(area.getText()+" "+area.getText().length());
         }
+    }
+    public void save(){
+            saver = new ThreadSaver();
+            if (subscription!=null) subscription.unsubscribe();
+            subscription= saver.getStatus().subscribe(s->{
+                Platform.runLater(()->{
+                    processText.setText(s);
+                });
+            });
+            saver.start();
+
     }
 
 }
