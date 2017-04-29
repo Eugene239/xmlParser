@@ -3,6 +3,7 @@ package ru.epavlov.xmlParser.logic.xml;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+import ru.epavlov.xmlParser.logic.Parser;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -10,6 +11,7 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -38,7 +40,8 @@ public class Room {
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
            // Document document = docBuilder.parse(getClass().getClassLoader().getResourceAsStream("fields.xml"));
-            Document document = docBuilder.parse(System.getProperty("user.dir")+"/fields.xml");
+          //  Document document = docBuilder.parse(System.getProperty("user.dir")+"/fields.xml");
+            Document document = docBuilder.parse(new File(Parser.config));
             //инициализация общих данных
             Node common = document.getElementsByTagName("Общее").item(0);
             for (int i = 0; i < common.getChildNodes().getLength(); i++) {

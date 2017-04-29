@@ -14,6 +14,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -30,6 +31,7 @@ import java.util.HashMap;
 //ObjectRight
 
 public class Parser {
+    public static final String config = Paths.get("").toFile().getAbsolutePath()+"\\fields.xml";
     private static final String TAG = "["+ Parser.class.getSimpleName()+"]: ";
     private static final Logger log = Logger.getLogger(Parser.class);
     //public static  String OUTPUT_FILE = System.getProperty("user.dir") + "\\result.xls";
@@ -48,7 +50,8 @@ public class Parser {
     private void parseHeaders() throws ParserConfigurationException, IOException, SAXException {
         DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-        Document document = docBuilder.parse(System.getProperty("user.dir")+"/fields.xml");
+
+        Document document = docBuilder.parse(new File(config));
      //   Document document = docBuilder.parse(getClass().getClassLoader().getResourceAsStream("fields.xml"));
         Node node = document.getElementsByTagName("Последовательность").item(0);
         String[] arr= node.getTextContent().split(",");

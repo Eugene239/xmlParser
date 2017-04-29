@@ -5,6 +5,8 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Описание класса<br/>
@@ -17,7 +19,9 @@ import java.io.IOException;
  */
 public class Main {
     public static void main(String[] args) throws IOException, SAXException, ParserConfigurationException {
-        checkList();
+        Path path = Paths.get("");
+        System.out.println(path.toFile().getAbsoluteFile());
+       // checkList();
      //  checkFile(new File("C:\\Users\\epavlov\\Desktop\\xmlEugene\\kp_b39c766e-1458-4658-a5c0-5b2dcb4ea495.xml"));
     }
     public static void checkList() throws IOException, SAXException {
