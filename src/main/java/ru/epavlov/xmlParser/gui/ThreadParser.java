@@ -3,6 +3,7 @@ package ru.epavlov.xmlParser.gui;
 import javafx.application.Platform;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
+import ru.epavlov.xmlParser.logic.Messages;
 import ru.epavlov.xmlParser.logic.Parser;
 import rx.subjects.BehaviorSubject;
 
@@ -30,7 +31,7 @@ public class ThreadParser extends Thread  {
         try {
             parser = Parser.getInstance();
         }catch ( Exception e) {
-            status.onNext("Не найден файл конфигурации");
+            status.onNext(Messages.FILE_CONFIG_ERROR);
             log.error(TAG+ e.toString());
             e.printStackTrace();
         }
@@ -40,14 +41,14 @@ public class ThreadParser extends Thread  {
         super.run();
         ArrayList<File> list= Model.getInstance().getRxFiles().getValue();
         if (parser!=null && list!=null && list.size()>0) {
-            status.onNext("Запуск");
+            status.onNext(Messages.START);
             for (File f : list) {
                 try {
                     parser.parseFile(f, Model.getInstance().getArea());
                     Platform.runLater(() -> {
                         Model.getInstance().get(f.getName()).getStatus().onNext("Готов");
                     });
-                    status.onNext("Парсинг " + f.getName());
+                    status.onNext(Messages.PARSE_FILE + f.getName());
                 } catch (IOException | SAXException | ParserConfigurationException e) {
                     Platform.runLater(() -> {
                         Model.getInstance().get(f.getName()).getStatus().onNext("Ошибка");
@@ -57,7 +58,7 @@ public class ThreadParser extends Thread  {
                     e.printStackTrace();
                 }
             }
-            status.onNext("Файлы обработаны");
+            status.onNext(Messages.PARSE_DONE);
         }
 
       done = true;
@@ -67,7 +68,9 @@ public class ThreadParser extends Thread  {
     public boolean isDone() {
         return done;
     }
-
+//    private void complain(String text){
+//
+//    }
     public BehaviorSubject<String> getStatus() {
         return status;
     }

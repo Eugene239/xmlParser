@@ -2,6 +2,7 @@ package ru.epavlov.xmlParser.gui;
 
 import org.apache.log4j.Logger;
 import ru.epavlov.xmlParser.logic.MacroRunner;
+import ru.epavlov.xmlParser.logic.Messages;
 import ru.epavlov.xmlParser.logic.Parser;
 import rx.subjects.BehaviorSubject;
 
@@ -27,7 +28,7 @@ public class ThreadSaver extends Thread implements MacroRunner.RunnerListner{
         try {
             parser = Parser.getInstance();
         }catch ( Exception e) {
-            status.onNext("Не найден файл конфигурации");
+            status.onNext(Messages.FILE_CONFIG_ERROR);
             log.error(TAG+ e.toString());
             e.printStackTrace();
         }
@@ -39,15 +40,15 @@ public class ThreadSaver extends Thread implements MacroRunner.RunnerListner{
         try{
             if (parser!=null)  parser.save(new File(Parser.OUTPUT_FILE));
         } catch (IOException e) {
-            status.onNext("Ошибка сохранения");
+            status.onNext(Messages.SAVE_ERROR);
             log.error(TAG+ e.toString());
             e.printStackTrace();
         }
         try {
-            status.onNext("Запуск макроса");
+            status.onNext(Messages.START_MACROS);
             MacroRunner.start(new File(Parser.OUTPUT_FILE),this);
         } catch (IOException e) {
-            status.onNext("Ошибка запуска макроса");
+            status.onNext(Messages.MACROS_START_ERROR);
             //System.err.println("MacroRunner:: "+e.toString());
             log.error(TAG+ e.toString());
 
@@ -57,8 +58,8 @@ public class ThreadSaver extends Thread implements MacroRunner.RunnerListner{
     @Override
     public void onDone(String s) {
         switch (s){
-            case "Error": status.onNext("Ошибка макроса"); break;
-            case "Done": status.onNext("Готово"); break;
+            case "Error": status.onNext(Messages.MACROS_ERROR); break;
+            case "Done": status.onNext(Messages.DONE); break;
         }
     }
     public BehaviorSubject<String> getStatus() {

@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
+import javafx.scene.paint.Paint;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ public class Item extends ListCell<String> {
     }
 
     public Item()  {
+        //System.out.println(getClass().getClassLoader().getResource("item.fxml").getFile());
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("view/item.fxml"));
         fxmlLoader.setController(this);
         try {
@@ -58,6 +60,8 @@ public class Item extends ListCell<String> {
             model = Model.getInstance().get(string);
             name.setText(model.getName());
             model.getStatus().subscribe(s->{
+                if (s.contains("Ошибка")) status.setTextFill(Paint.valueOf("red"));
+                if (s.contains("Готов")) status.setTextFill(Paint.valueOf("green"));
                 status.setText(s);
             });
             delete.setOnMouseClicked(l->{
