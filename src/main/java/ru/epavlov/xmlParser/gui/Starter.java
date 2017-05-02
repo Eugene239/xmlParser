@@ -17,6 +17,7 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.apache.log4j.Logger;
+import ru.epavlov.xmlParser.logic.MacroRunner;
 import ru.epavlov.xmlParser.logic.Messages;
 import ru.epavlov.xmlParser.logic.Parser;
 import rx.Subscription;
@@ -54,6 +55,10 @@ public class Starter extends Application {
     Label processText;
 
     public static void main(String[] args) {
+        if (!MacroRunner.confirm()) {
+            log.error(TAG+"NO CONFIRMATION");
+            System.exit(-1);
+        }
         launch(args);
 
     }
