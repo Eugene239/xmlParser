@@ -40,5 +40,19 @@ public class MacroRunner {
         }
         listner.onDone(s);
     }
+    public static String confirm() throws IOException {
+        ProcessBuilder pb = new ProcessBuilder(PATH,"confirm");
+        pb.redirectErrorStream(true);
+        Process p = pb.start();
+        String s="";
+        while (p.isAlive()){
+            s+=(char)p.getInputStream().read();
+        }
+        s=s.replaceAll("\\D","");
+        return s;
+    }
 
+    public static void main(String[] args) throws IOException {
+        System.out.println(confirm());
+    }
 }
