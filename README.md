@@ -11,16 +11,14 @@ u need file fields.xml out of project (jar)
         <Квартира xpath="//Address/Apartment/@Value"/>
         <Площадь_квартиры xpath="//Area/text()" entity="String" type="text"/>
     </Общее>
-
     <Права xpath="//ExtractObject/ObjectRight/Right">
-        <ФИО xpath="/Owner/Person/Content/text()"/>
+        <ФИО xpath="/Owner"/>
         <Номер_свидетельства xpath="/Registration/RegNumber/text()"/>
         <Дата_свидетельства xpath="/Registration/RegDate/text()"/>
         <Доля_собственника xpath="/Registration/ShareText/text()"/>
         <Тип_собственности xpath="/Registration/Name/text()"/>
     </Права>
     <Последовательность>
-        Тестовое поле,
         Улица,
         ФИО,
         Дом,
@@ -30,11 +28,9 @@ u need file fields.xml out of project (jar)
         Квартира,
         Площадь дома,
         Площадь_квартиры,
-        Пустое поле,
         Номер_свидетельства,
         Дата_свидетельства,
         Доля_собственника,
-        Тип_собственности,
-        Конец
+        Тип_собственности
     </Последовательность>
 </Поля>
