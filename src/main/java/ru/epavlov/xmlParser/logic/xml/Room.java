@@ -39,8 +39,6 @@ public class Room {
         try {
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-           // Document document = docBuilder.parse(getClass().getClassLoader().getResourceAsStream("fields.xml"));
-          //  Document document = docBuilder.parse(System.getProperty("user.dir")+"/fields.xml");
             Document document = docBuilder.parse(new File(Parser.config));
             //инициализация общих данных
             Node common = document.getElementsByTagName("Общее").item(0);
@@ -49,6 +47,7 @@ public class Room {
                 if (item.getNodeType() == Node.ELEMENT_NODE) {
                     String xmlName=  item.getNodeName();
                     String xpath = item.getAttributes().getNamedItem("xpath").getTextContent();
+                 //   System.out.println(xmlName+" "+xpath);
                     if (!item.getTextContent().equals("")) {
                         ArrayList<String> params = new ArrayList<>(Arrays.asList(item.getTextContent().split(",")));
                         parmsMap.put(xmlName,params);

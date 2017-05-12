@@ -42,10 +42,14 @@ public class Right {
             for (int i = 0; i < setNode.getChildNodes().getLength(); i++) {
                 Node node = setNode.getChildNodes().item(i);
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
+
                     String xpath = node.getAttributes().getNamedItem("xpath").getTextContent();
+                 //   System.out.println(node.getNodeName()+ " "+xpath);
                     nameXpathMap.put(node.getNodeName(),xpath);
                 }
             }
+            System.out.println(">>>>>>>>>>>");
+            System.out.println();
         }catch (Exception e){
             log.error(TAG+e.toString());
             e.printStackTrace();
@@ -66,18 +70,29 @@ public class Right {
                 HashMap<String,String> map = new HashMap<>();
                 int finalI = i;
                 nameXpathMap.forEach((name, subPath)-> {
-                    String path = xpathGeneral+"["+(finalI +1)+"]"+subPath;
-                    String value="";
-                    try {
-                        value = xpath.evaluate(path,document, XPathConstants.STRING).toString();
-                    } catch (XPathExpressionException e) {
-                        log.error(TAG+"parse()"+e.toString());
-                        e.printStackTrace();
+                    if(!name.equals("ФИО")) {
+                        String path = xpathGeneral + "[" + (finalI + 1) + "]" + subPath;
+                        String value = "";
+                        try {
+                            value = xpath.evaluate(path, document, XPathConstants.STRING).toString();
+                        } catch (XPathExpressionException e) {
+                            log.error(TAG + "parse()" + e.toString());
+                            e.printStackTrace();
+                        }
+                       // System.out.println(name + " " + value);
+                        map.put(name, value);
                     }
-                    map.put(name,value);
                 });
-                mapArrayList.add(map);
+                ArrayList<String> ownersList= Person.getPerson(document,xpathGeneral+"["+(i+1)+"]", nameXpathMap.get("ФИО"));
+                ownersList.forEach(s -> {
+                    HashMap<String,String> fullMap = new HashMap<>();
+                    fullMap.putAll(map);
+                    fullMap.put("ФИО",s);
+                    mapArrayList.add(fullMap);
+                });
+                //mapArrayList.add(map);
             }
+
         } catch (XPathExpressionException e) {
             log.error(TAG+"parse()"+e.toString());
             e.printStackTrace();

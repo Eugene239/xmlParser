@@ -76,10 +76,12 @@ public class Parser {
         Document d = docBuilder.parse(f);
         HashMap<String,String> roomMap= Room.getInstanse().parse(d);
         ArrayList<HashMap<String,String>> rightList=  Right.getInstanse().parse(d);
+
         rightList.forEach(rightMap->{
             rightMap.putAll(roomMap);
-            rightMap.forEach((s,s1)->{
-            });
+            rightMap.put("file",f.getName());
+//            rightMap.forEach((s,s1)->{
+//            });
             data.add(rightMap);
         });
     }
